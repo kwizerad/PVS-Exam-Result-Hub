@@ -623,73 +623,6 @@
             font-size: 0.85rem;
         }
 
-        .history-panel {
-            margin-top: 16px;
-            background: rgba(255,255,255,0.7);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .history-header h4 {
-            margin: 0;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .history-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .history-item:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
-        }
-
-        .history-item .meta {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .history-item .name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .history-item .sub {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .history-empty {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            padding: 10px 4px;
-        }
-
         .skeleton-card {
             background: white;
             border: 1px solid var(--border);
@@ -767,14 +700,6 @@
                 <i class="fas fa-search"></i> Fetch Exam Codes
             </button>
         </form>
-
-        <div class="history-panel">
-            <div class="history-header">
-                <h4><i class="fas fa-history"></i> Recent Searches</h4>
-                <button class="btn-copy" onclick="clearHistory()" style="padding:4px 8px;font-size:0.78rem;">Clear</button>
-            </div>
-            <div id="historyList" class="history-list"></div>
-        </div>
 
         <!-- Codes Display -->
         <div id="codesContainer" class="codes-container">
@@ -855,9 +780,7 @@
     const modalTitle = document.getElementById('modalTitle');
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
-    const historyList = document.getElementById('historyList');
     const resultCache = {};
-    const HISTORY_KEY = 'pvs_exam_history';
 
     function showToast(message, type = 'success') {
         toast.className = 'toast ' + type;
@@ -954,69 +877,6 @@
         theoryCount.textContent = '•';
         practicalCount.textContent = '•';
         codesContainer.classList.add('show');
-    }
-
-    function getHistory() {
-        try {
-            return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-        } catch {
-            return [];
-        }
-    }
-
-    function saveHistory(entry) {
-        const history = getHistory();
-        const filtered = history.filter(item => item.nationalId !== entry.nationalId && item.name !== entry.name);
-        filtered.unshift(entry);
-        const trimmed = filtered.slice(0, 8);
-        localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
-        renderHistory();
-    }
-
-    function renderHistory() {
-        const history = getHistory();
-        if (!history.length) {
-            historyList.innerHTML = '<div class="history-empty">No recent searches yet.</div>';
-            return;
-        }
-
-        historyList.innerHTML = history.map(item => `
-            <div class="history-item" onclick="restoreFromHistory('${item.nationalId || ''}', '${item.name || ''}')">
-                <div class="meta">
-                    <span class="name">${item.name || item.nationalId || 'Unknown'}</span>
-                    <span class="sub">${item.nationalId || 'Saved result'} · ${item.searchedAt || ''}</span>
-                </div>
-                <span class="sub">${item.count || 0} code(s)</span>
-            </div>
-        `).join('');
-    }
-
-    function clearHistory() {
-        localStorage.removeItem(HISTORY_KEY);
-        renderHistory();
-        showToast('History cleared', 'success');
-    }
-
-    function restoreFromHistory(nationalId, name) {
-        const input = document.getElementById('national_id');
-        input.value = name || nationalId || '';
-        const historyEntry = getHistory().find(item => {
-            const itemName = (item.name || '').toLowerCase();
-            const itemNationalId = (item.nationalId || '').toLowerCase();
-            const query = (name || nationalId || '').toLowerCase();
-            return itemName.includes(query) || itemNationalId.includes(query) || itemName === query || itemNationalId === query;
-        });
-        if (historyEntry && historyEntry.results) {
-            Object.assign(resultCache, historyEntry.results);
-            theoryCount.textContent = historyEntry.theoryCount || 0;
-            practicalCount.textContent = historyEntry.practicalCount || 0;
-            renderCodeList(historyEntry.theoryCodes || [], theoryCodesList, 'theory');
-            renderCodeList(historyEntry.practicalCodes || [], practicalCodesList, 'practical');
-            codesContainer.classList.add('show');
-            showToast(`Loaded saved results for ${historyEntry.name || historyEntry.nationalId}`, 'success');
-            return;
-        }
-        showToast('This saved search has no local result details to restore.', 'error');
     }
 
     function showModalResults(data) {
@@ -1187,19 +1047,7 @@
         }
 
         if (!/^\d{16}$/.test(searchValue)) {
-            const matched = getHistory().find(item => {
-                const itemName = (item.name || '').toLowerCase();
-                const itemNationalId = (item.nationalId || '').toLowerCase();
-                const query = searchValue.toLowerCase();
-                return itemName.includes(query) || itemNationalId.includes(query);
-            });
-            if (matched) {
-                restoreFromHistory(matched.nationalId, matched.name);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-search"></i> Fetch Exam Codes';
-                return;
-            }
-            showToast('No saved result found for that name. Try a 16-digit National ID.', 'error');
+            showToast('Please enter a valid 16-digit National ID.', 'error');
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-search"></i> Fetch Exam Codes';
             return;
@@ -1222,19 +1070,7 @@
                 
                 Object.assign(resultCache, results);
                 
-                const candidateName = data.candidateName || 'Unknown';
                 const totalCodes = theoryCodes.length + practicalCodes.length;
-                saveHistory({
-                    name: candidateName,
-                    nationalId: data.nationalId || searchValue,
-                    theoryCodes,
-                    practicalCodes,
-                    theoryCount: theoryCodes.length,
-                    practicalCount: practicalCodes.length,
-                    count: totalCodes,
-                    searchedAt: new Date().toLocaleString(),
-                    results
-                });
                 
                 theoryCount.textContent = theoryCodes.length;
                 practicalCount.textContent = practicalCodes.length;
@@ -1310,7 +1146,6 @@
         }
     }
 
-    renderHistory();
 </script>
 </body>
 </html>
