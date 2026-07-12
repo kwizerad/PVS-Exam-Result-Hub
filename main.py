@@ -33,12 +33,15 @@ CODE_RESULT_CACHE = {}
 
 @app.on_event("startup")
 async def startup_event():
-    app.state.httpx_client = httpx.AsyncClient(
-        verify=True,
-        http2=True,
-        timeout=httpx.Timeout(10.0, connect=5.0),
-        limits=httpx.Limits(max_keepalive_connections=10, max_connections=20),
-    )
+    try:
+        app.state.httpx_client = httpx.AsyncClient(
+            verify=True,
+            timeout=httpx.Timeout(10.0, connect=5.0),
+            limits=httpx.Limits(max_keepalive_connections=10, max_connections=20),
+        )
+    except Exception as exc:
+        app.state.httpx_client = None
+        print(f"Failed to initialize HTTP client: {exc}")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -168,7 +171,13 @@ async def check_marks(payload: MarksRequest):
     headers = IREMBO_HEADERS.copy()
     headers["Nationalid"] = payload.national_id
     
-    client = app.state.httpx_client
+    client = getattr(app.state, "httpx_client", None)
+    if not client:
+        return {
+            "status": "error",
+            "code": "SERVER_ERROR",
+            "message": "❌ SERVER ERROR\n\nThe backend client could not be initialized. Please try again in a moment."
+        }
     try:
         response = await client.get(url, headers=headers)
 
@@ -266,7 +275,9 @@ async def fetch_marks(payload: SimpleCodeRequest):
     headers = IREMBO_HEADERS.copy()
     headers["Registrationcode"] = payload.registration_code
     
-    client = app.state.httpx_client
+    client = getattr(app.state, "httpx_client", None)
+    if not client:
+        return {"error": "The backend client could not be initialized."}
     try:
         response = await client.get(url, headers=headers)
         response.raise_for_status()
@@ -276,7 +287,7 @@ async def fetch_marks(payload: SimpleCodeRequest):
         return {"error": str(e)}
 
 # Serve static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 @app.get("/")
 async def serve_index():
