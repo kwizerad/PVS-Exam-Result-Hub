@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVS Driving Exam Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-light: #dbeafe;
+            --primary-dark: #1e40af;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --theory-color: #7c3aed;
+            --theory-light: #ede9fe;
+            --practical-color: #059669;
+            --practical-light: #d1fae5;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 600px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        .container:hover {
+            transform: translateY(-2px);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+        .header-icon {
+            background: var(--primary-light);
+            color: var(--primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+        .header h2 {
+            margin: 0;
+            color: var(--text);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+        .form-group { margin-bottom: 18px; }
+        label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        label i { margin-right: 6px; color: var(--primary); }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 10px 14px; 
+            border: 2px solid var(--border); 
+            border-radius: 10px; 
+            font-size: 15px;
+            transition: all 0.2s;
+            background: #fafbfc;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+            background: white;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 86, 219, 0.3);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        .btn-success:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            width: auto;
+            border-radius: 6px;
+        }
+        .btn-copy {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .btn-copy:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .btn-copy.copied {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        .result-box { 
+            margin-top: 20px; 
+            padding: 16px; 
+            border-radius: 10px; 
+            background: #f8fafc; 
+            border: 1px solid var(--border); 
+            white-space: pre-line; 
+            display: none; 
+            font-size: 14px; 
+            line-height: 1.6;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .tab-btn i { margin-right: 6px; }
+        .tab-btn.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.5);
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Split codes view */
+        .codes-container {
+            display: none;
+            margin-top: 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .codes-container.show {
+            display: block;
+        }
+        .codes-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .codes-column {
+            padding: 16px 18px;
+            min-height: 150px;
+        }
+        .codes-column:first-child {
+            border-right: 2px solid var(--border);
+        }
+        .codes-column .column-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+        .codes-column.theory-column .column-header {
+            color: var(--theory-color);
+        }
+        .codes-column.practical-column .column-header {
+            color: var(--practical-color);
+        }
+        .codes-column .column-header .count-badge {
+            background: var(--border);
+            color: var(--text-secondary);
+            padding: 0 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .code-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .code-item:hover {
+            border-color: var(--primary);
+            background: white;
+        }
+        .code-item .code-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .code-item .code-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .code-item .btn-view {
+            padding: 3px 12px;
+            border: none;
+            border-radius: 4px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .code-item .btn-view:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        .code-item .btn-view:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .no-codes-message {
+            text-align: center;
+            padding: 20px 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .no-codes-message i {
+            font-size: 1.5rem;
+            opacity: 0.4;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast .toast-icon {
+            font-size: 1.2rem;
+        }
+        .toast.success .toast-icon { color: #34d399; }
+        .toast.error .toast-icon { color: #f87171; }
+
+        /* Modal for exam results */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-card {
+            background: white;
+            margin: 20px auto;
+            border-radius: 20px;
+            max-width: 560px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.25);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(40px) scale(0.96); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .modal-card-header {
+            background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+            padding: 16px 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .modal-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .modal-card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 50%;
+        }
+        .modal-card-header .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .modal-card-header .header-top .title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-card-header .header-top .title-group .icon {
+            background: rgba(255,255,255,0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+        }
+        .modal-card-header .header-top .title-group h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        .modal-close {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+        .modal-close:hover {
+            background: rgba(255,255,255,0.25);
+            transform: rotate(90deg);
+        }
+
+        .modal-card-body {
+            padding: 24px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 500px;
+        }
+        .modal-card-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-card-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .modal-card-body::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .modal-card-footer {
+            padding: 12px 24px 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #fafbfc;
+            flex-shrink: 0;
+        }
+        .modal-card-footer .btn-close {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-card-footer .btn-close:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Result details inside modal */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-row .label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .detail-row .value {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+        .detail-row .value.pass { color: var(--success); }
+        .detail-row .value.fail { color: var(--danger); }
+
+        .modal-loading {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        .modal-loading p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .modal-error {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .modal-error .error-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .modal-error .error-message {
+            color: var(--danger);
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        /* Exam type badge */
+        .exam-type-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .exam-type-badge.practical {
+            background: var(--practical-light);
+            color: var(--practical-color);
+        }
+        .exam-type-badge.theory {
+            background: var(--theory-light);
+            color: var(--theory-color);
+        }
+
+        .candidate-info-row {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .candidate-info-row .name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .candidate-info-row .id {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .codes-split {
+                grid-template-columns: 1fr;
+            }
+            .codes-column:first-child {
+                border-right: none;
+                border-bottom: 2px solid var(--border);
+            }
+            .container { padding: 20px; }
+            .modal-card { max-width: 100%; margin: 10px; }
+            .candidate-info-row {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="toast" class="toast">
+    <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+    <span id="toastMessage">Copied!</span>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="header-icon"><i class="fas fa-car"></i></div>
+        <div>
+            <h2>Driving Exam Results</h2>
+            <span class="subtitle">Check your driving license exam results</span>
+        </div>
+    </div>
+    
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('full')"><i class="fas fa-search"></i> Search</button>
+        <button class="tab-btn" onclick="switchTab('simple')"><i class="fas fa-key"></i> Quick Code</button>
+    </div>
+
+    <!-- Tab 1: Full Search -->
+    <div id="tab-full" class="tab-panel active">
+        <form id="pvsForm">
+            <div class="form-group">
+                <label for="national_id"><i class="fas fa-id-card"></i> National ID</label>
+                <input type="text" id="national_id" maxlength="16" placeholder="Enter 16-digit ID" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <i class="fas fa-search"></i> Fetch Exam Codes
+            </button>
+        </form>
+
+        <!-- Codes Display -->
+        <div id="codesContainer" class="codes-container">
+            <div class="codes-split">
+                <!-- Theory Column -->
+                <div class="codes-column theory-column">
+                    <div class="column-header">
+                        <i class="fas fa-book"></i> Theory Codes
+                        <span class="count-badge" id="theoryCount">0</span>
+                    </div>
+                    <div id="theoryCodesList"></div>
+                </div>
+                <!-- Practical Column -->
+                <div class="codes-column practical-column">
+                    <div class="column-header">
+                        <i class="fas fa-wrench"></i> Practical Codes
+                        <span class="count-badge" id="practicalCount">0</span>
+                    </div>
+                    <div id="practicalCodesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Simple Code Search -->
+    <div id="tab-simple" class="tab-panel">
+        <div class="form-group">
+            <label for="regCode"><i class="fas fa-key"></i> Registration Code</label>
+            <input type="text" id="regCode" placeholder="Enter registration code" required>
+        </div>
+        <button class="btn btn-primary" onclick="fetchSimpleResult()">
+            <i class="fas fa-chart-bar"></i> Fetch Results
+        </button>
+    </div>
+
+    <div id="resultWindow" class="result-box"></div>
+</div>
+
+<!-- Modal -->
+<div id="resultModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-card-header">
+            <div class="header-top">
+                <div class="title-group">
+                    <div class="icon"><i class="fas fa-file-alt"></i></div>
+                    <h3 id="modalTitle">Exam Results</h3>
+                </div>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-card-body" id="modalBody">
+            <!-- Content injected here -->
+        </div>
+        <div class="modal-card-footer">
+            <button class="btn-close" onclick="closeModal()">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = "http://127.0.0.1:8000/api";
+    const form = document.getElementById('pvsForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultWindow = document.getElementById('resultWindow');
+    const codesContainer = document.getElementById('codesContainer');
+    const theoryCodesList = document.getElementById('theoryCodesList');
+    const practicalCodesList = document.getElementById('practicalCodesList');
+    const theoryCount = document.getElementById('theoryCount');
+    const practicalCount = document.getElementById('practicalCount');
+    const modal = document.getElementById('resultModal');
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const resultCache = {};
+
+    function showToast(message, type = 'success') {
+        toast.className = 'toast ' + type;
+        toastMessage.textContent = message;
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
+
+    function copyToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied: ' + text, 'success');
+            }).catch(() => {
+                fallbackCopy(text);
+            });
+        } else {
+            fallbackCopy(text);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            showToast('Copied: ' + text, 'success');
+        } catch (err) {
+            showToast('Failed to copy', 'error');
+        }
+        document.body.removeChild(textarea);
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+        event.target.classList.add('active');
+        resultWindow.style.display = 'none';
+        codesContainer.classList.remove('show');
+        closeModal();
+    }
+
+    function openModal() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') closeModal();
+    });
+
+    function showModalLoading() {
+        modalBody.innerHTML = `
+            <div class="modal-loading">
+                <div class="spinner"></div>
+                <p><i class="fas fa-spinner fa-spin"></i> Loading exam results...</p>
+            </div>
+        `;
+        openModal();
+    }
+
+    function showModalResults(data) {
+        const isPractical = data.isPractical || false;
+        const passed = data.passed;
+        
+        const typeBadge = isPractical 
+            ? '<span class="exam-type-badge practical"><i class="fas fa-wrench"></i> Practical</span>'
+            : '<span class="exam-type-badge theory"><i class="fas fa-book"></i> Theory</span>';
+        
+        const statusBadge = data.status && data.status !== 'N/A'
+            ? `<span style="display:inline-block;padding:2px 12px;border-radius:12px;font-size:0.7rem;font-weight:600;background:${data.status.toLowerCase() === 'approved' ? 'var(--success-light)' : data.status.toLowerCase() === 'pending' ? 'var(--warning-light)' : 'var(--danger-light)'};color:${data.status.toLowerCase() === 'approved' ? 'var(--success)' : data.status.toLowerCase() === 'pending' ? 'var(--warning)' : 'var(--danger)'}">${data.status}</span>`
+            : '';
+
+        modalTitle.textContent = `${isPractical ? 'Practical' : 'Theory'} Exam Results`;
+        
+        modalBody.innerHTML = `
+            <div class="candidate-info-row">
+                <div>
+                    <div class="name">${data.candidateName || 'N/A'}</div>
+                    <div class="id"><i class="fas fa-id-card"></i> ${data.nationalId || 'N/A'}</div>
+                </div>
+                <div>
+                    ${typeBadge}
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-key"></i> Registration Code</span>
+                <span class="value" style="font-family:monospace;display:flex;align-items:center;gap:6px;">
+                    ${data.registrationCode || 'N/A'}
+                    <button class="btn-copy" onclick="copyToClipboard('${data.registrationCode || ''}')" style="font-size:0.65rem;padding:2px 8px;">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-tag"></i> License Category</span>
+                <span class="value">${data.licenseCategory || 'N/A'}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-calendar-day"></i> Exam Date</span>
+                <span class="value">${data.examDate || 'N/A'}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-map-marker-alt"></i> Test Center</span>
+                <span class="value">${data.testCenter || 'N/A'}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-star"></i> Score</span>
+                <span class="value">
+                    <span style="color:var(--primary);font-size:1.1rem;">${data.marksObtained || 0}</span> / ${data.totalMarks || 20}
+                    <span style="font-size:0.7rem;color:var(--text-secondary);font-weight:400;margin-left:4px;">(Pass: ${data.passMark || 20})</span>
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label"><i class="fas fa-flag-checkered"></i> Result</span>
+                <span class="value ${passed ? 'pass' : 'fail'}">
+                    ${passed ? '✅ Passed' : '❌ Failed'}
+                    ${statusBadge ? `&nbsp;${statusBadge}` : ''}
+                </span>
+            </div>
+
+            ${data.grade && data.grade !== 'N/A' ? `
+                <div class="detail-row">
+                    <span class="label"><i class="fas fa-award"></i> Grade</span>
+                    <span class="value">${data.grade}</span>
+                </div>
+            ` : ''}
+        `;
+        openModal();
+    }
+
+    function showModalError(message) {
+        modalTitle.textContent = 'Error';
+        modalBody.innerHTML = `
+            <div class="modal-error">
+                <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="error-message">${message || 'Failed to retrieve exam results.'}</div>
+                <div style="margin-top:12px;color:var(--text-secondary);font-size:0.85rem;">
+                    <i class="fas fa-info-circle"></i> Please try again.
+                </div>
+            </div>
+        `;
+        openModal();
+    }
+
+    function renderCodeList(codes, container, type) {
+        if (!codes || codes.length === 0) {
+            container.innerHTML = `
+                <div class="no-codes-message">
+                    <i class="fas fa-search"></i>
+                    No ${type} codes found
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = codes.map(code => `
+            <div class="code-item">
+                <span class="code-text"><i class="fas fa-key" style="color:var(--text-secondary);font-size:0.7rem;"></i> ${code}</span>
+                <div class="code-actions">
+                    <button class="btn-copy" onclick="copyToClipboard('${code}')" title="Copy code">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="btn-view" onclick="viewCodeResult('${code}')" title="View results">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function viewCodeResult(code) {
+        const cached = resultCache[code];
+        if (cached) {
+            showModalResults(cached);
+            return;
+        }
+
+        showModalLoading();
+        
+        try {
+            const response = await fetch(`${API_URL}/select-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    national_id: document.getElementById('national_id').value.trim(),
+                    selected_code: code 
+                })
+            });
+            const data = await response.json();
+            
+            if (data.status === 'error') {
+                showModalError(data.message || 'Failed to retrieve exam results.');
+            } else if (data.status === 'success' && data.result) {
+                resultCache[code] = data.result;
+                showModalResults(data.result);
+            } else {
+                showModalError('Unexpected response from server.');
+            }
+        } catch (error) {
+            showModalError('Failed to connect to server. Please try again.');
+            console.error('Error:', error);
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="loading-spinner"></span> Searching...';
+        resultWindow.style.display = "none";
+        codesContainer.classList.remove('show');
+        theoryCodesList.innerHTML = '';
+        practicalCodesList.innerHTML = '';
+
+        const nationalId = document.getElementById('national_id').value.trim();
+        if (!nationalId || nationalId.length !== 16) {
+            showToast('Please enter a valid 16-digit National ID', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-search"></i> Fetch Exam Codes';
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/check-marks`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ national_id: nationalId })
+            });
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                const theoryCodes = data.theory_codes || [];
+                const practicalCodes = data.practical_codes || [];
+                const results = data.results || {};
+                
+                Object.assign(resultCache, results);
+                
+                theoryCount.textContent = theoryCodes.length;
+                practicalCount.textContent = practicalCodes.length;
+                
+                renderCodeList(theoryCodes, theoryCodesList, 'theory');
+                renderCodeList(practicalCodes, practicalCodesList, 'practical');
+                
+                codesContainer.classList.add('show');
+                
+                if (theoryCodes.length === 0 && practicalCodes.length === 0) {
+                    showToast('No exam codes found for this ID', 'error');
+                } else {
+                    showToast(`Found ${theoryCodes.length + practicalCodes.length} exam code(s)`, 'success');
+                }
+            } else if (data.status === 'error') {
+                showToast(data.message || 'No records found.', 'error');
+                codesContainer.classList.remove('show');
+            } else {
+                showToast('Unexpected response from server.', 'error');
+            }
+        } catch (error) {
+            showToast('Failed to connect to server. Please try again.', 'error');
+            console.error('Error:', error);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-search"></i> Fetch Exam Codes';
+        }
+    });
+
+    async function fetchSimpleResult() {
+        const code = document.getElementById('regCode').value.trim();
+        if (!code) {
+            showModalError('Please enter a registration code.');
+            return;
+        }
+
+        const cached = resultCache[code];
+        if (cached) {
+            showModalResults(cached);
+            return;
+        }
+
+        const btn = event.target;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span> Loading...';
+        showModalLoading();
+
+        try {
+            const res = await fetch(`${API_URL}/select-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    national_id: '0000000000000000',
+                    selected_code: code 
+                })
+            });
+            const data = await res.json();
+            
+            if (data.status === 'error') {
+                showModalError(data.message || 'Failed to retrieve exam results.');
+            } else if (data.status === 'success' && data.result) {
+                resultCache[code] = data.result;
+                showModalResults(data.result);
+            } else {
+                showModalError('No records found for this registration code.');
+            }
+        } catch (e) {
+            showModalError('Error connecting to server. Please try again.');
+            console.error('Error:', e);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-chart-bar"></i> Fetch Results';
+        }
+    }
+</script>
+</body>
+</html>
