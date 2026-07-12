@@ -31,7 +31,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: radial-gradient(circle at top left, #f8fbff 0%, #e2e8f0 45%, #f1f5f9 100%);
             color: var(--text);
             margin: 0;
             padding: 20px;
@@ -41,94 +41,141 @@
             min-height: 100vh;
         }
         .container {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
             width: 100%;
-            max-width: 600px;
-            padding: 32px;
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
+            max-width: 620px;
+            padding: 30px;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(14px);
         }
         .container:hover {
             transform: translateY(-2px);
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.16);
         }
         .header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             padding-bottom: 16px;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.9);
         }
         .header-icon {
-            background: var(--primary-light);
+            background: linear-gradient(135deg, var(--primary-light), #eff6ff);
             color: var(--primary);
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
+            box-shadow: 0 10px 25px rgba(26, 86, 219, 0.16);
         }
         .header h2 {
             margin: 0;
             color: var(--text);
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
         .header .subtitle {
             color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-weight: 400;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
-        .form-group { margin-bottom: 18px; }
+        .hero-card {
+            background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+            border: 1px solid rgba(26, 86, 219, 0.12);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(26, 86, 219, 0.08);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .hero-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .helper-text {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .form-group { margin-bottom: 16px; }
         label { 
             display: block; 
             margin-bottom: 6px; 
-            font-weight: 600; 
-            font-size: 0.85rem;
+            font-weight: 700; 
+            font-size: 0.84rem;
             color: var(--text-secondary);
         }
         label i { margin-right: 6px; color: var(--primary); }
         input[type="text"] { 
             width: 100%; 
-            padding: 10px 14px; 
-            border: 2px solid var(--border); 
-            border-radius: 10px; 
+            padding: 12px 14px;
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
             font-size: 15px;
-            transition: all 0.2s;
-            background: #fafbfc;
+            transition: all 0.2s ease;
+            background: linear-gradient(90deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
         }
         input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+            box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.12);
             background: white;
         }
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 13px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            box-shadow: 0 10px 24px rgba(26, 86, 219, 0.22);
         }
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-dark), #1d4ed8);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(26, 86, 219, 0.3);
+            box-shadow: 0 14px 28px rgba(26, 86, 219, 0.28);
         }
         .btn-primary:disabled {
             opacity: 0.6;
@@ -683,6 +730,11 @@
             <span class="subtitle">Check your driving license exam results</span>
         </div>
     </div>
+
+    <div class="hero-card">
+        <span class="hero-pill"><i class="fas fa-bolt"></i> Fast and secure lookup</span>
+        <p>Search by national ID to preview your theory and practical codes in a clearer, easier-to-read layout.</p>
+    </div>
     
     <div class="tab-bar">
         <button class="tab-btn active" onclick="switchTab('full')"><i class="fas fa-search"></i> Search</button>
@@ -733,6 +785,9 @@
         <button class="btn btn-primary" onclick="fetchSimpleResult()">
             <i class="fas fa-chart-bar"></i> Fetch Results
         </button>
+        <div class="helper-text">
+            <i class="fas fa-info-circle"></i> Use this quick option when you already have a registration code.
+        </div>
     </div>
 
     <div id="resultWindow" class="result-box"></div>
