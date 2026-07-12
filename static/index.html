@@ -317,12 +317,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
             padding: 8px 12px;
             margin-bottom: 6px;
             background: #f8fafc;
             border-radius: 8px;
             border: 1px solid var(--border);
             transition: all 0.2s;
+            cursor: pointer;
         }
         .code-item:hover {
             border-color: var(--primary);
@@ -333,11 +336,29 @@
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.3px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .code-text-btn {
+            border: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
         }
         .code-item .code-actions {
             display: flex;
             gap: 6px;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
         .code-item .btn-view {
             padding: 3px 12px;
@@ -364,6 +385,32 @@
             padding: 20px 10px;
             color: var(--text-secondary);
             font-size: 0.85rem;
+        }
+        @media (max-width: 520px) {
+            .codes-column {
+                padding: 12px 14px;
+            }
+            .code-item {
+                padding: 12px 14px;
+            }
+            .code-item .code-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .code-item .btn-view {
+                flex: 1 1 auto;
+                min-width: 120px;
+            }
+            .code-item .btn-copy {
+                flex: 1 1 auto;
+                min-width: 90px;
+            }
+            .tab-bar {
+                flex-direction: column;
+            }
+            .tab-btn {
+                width: 100%;
+            }
         }
         .no-codes-message i {
             font-size: 1.5rem;
@@ -1016,13 +1063,15 @@
         }
 
         container.innerHTML = codes.map(code => `
-            <div class="code-item">
-                <span class="code-text"><i class="fas fa-key" style="color:var(--text-secondary);font-size:0.7rem;"></i> ${code}</span>
+            <div class="code-item" onclick="viewCodeResult('${code}')">
+                <button class="code-text-btn" type="button" onclick="event.stopPropagation(); viewCodeResult('${code}')">
+                    <span class="code-text"><i class="fas fa-key" style="color:var(--text-secondary);font-size:0.7rem;"></i> ${code}</span>
+                </button>
                 <div class="code-actions">
-                    <button class="btn-copy" onclick="copyToClipboard('${code}')" title="Copy code">
+                    <button class="btn-copy" type="button" onclick="event.stopPropagation(); copyToClipboard('${code}')" title="Copy code">
                         <i class="fas fa-copy"></i>
                     </button>
-                    <button class="btn-view" onclick="viewCodeResult('${code}')" title="View results">
+                    <button class="btn-view" type="button" onclick="event.stopPropagation(); viewCodeResult('${code}')" title="View results">
                         <i class="fas fa-eye"></i> View
                     </button>
                 </div>
