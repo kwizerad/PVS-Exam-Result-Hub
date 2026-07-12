@@ -10,6 +10,10 @@ import httpx
 from datetime import datetime
 import asyncio
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+INDEX_FILE = os.path.join(STATIC_DIR, "index.html")
+
 if sys.platform == "win32":
     os.environ["PYTHONIOENCODING"] = "utf-8"
     if hasattr(sys.stdout, 'reconfigure'):
@@ -276,4 +280,4 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def serve_index():
-    return FileResponse("static/index.html")
+    return FileResponse(INDEX_FILE)
